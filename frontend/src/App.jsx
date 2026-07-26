@@ -3,24 +3,23 @@ import "./App.css";
 
 function App() {
   const [url, setUrl] = useState("");
-  const [report, setReport] = useState(null);
-  const [error, setError] = useState("");
+  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const analyzeWebsite = async () => {
-    setError("");
-    setReport(null);
-
     if (!url) {
-      setError("Please enter a website URL");
+      setError("Please enter website URL");
       return;
     }
 
-    setLoading(true);
-
     try {
+      setLoading(true);
+      setError("");
+      setResult(null);
+
       const response = await fetch(
-        "http://localhost:5000/api/audit",
+        "https://page-pulse-74ja.onrender.com/api/audit",
         {
           method: "POST",
           headers: {
@@ -35,26 +34,27 @@ function App() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Unable to fetch website");
+        throw new Error(data.message || "Something went wrong");
       }
 
-      setReport(data);
+      setResult(data);
 
     } catch (err) {
-      setError(err.message);
+      console.log(err);
+      setError("Failed to fetch");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
 
   return (
-    <div className="container">
-
+    <div className="app">
       <h1>Page Pulse</h1>
 
-      <p>Website Performance Auditor</p>
-
+      <p>
+        Website Performance Auditor
+      </p>
 
       <input
         type="text"
@@ -62,7 +62,6 @@ function App() {
         value={url}
         onChange={(e) => setUrl(e.target.value)}
       />
-
 
       <button onClick={analyzeWebsite}>
         {loading ? "Analyzing..." : "Analyze"}
@@ -76,59 +75,19 @@ function App() {
       )}
 
 
+      {result && (
+        <div className="result">
+          <h2>Audit Result</h2>
 
-      {report && (
-        <div className="card">
-
-          <h2>Report</h2>
-
-          <p>
-            Status: {report.status}
-          </p>
-
-          <p>
-            Response Time: {report.responseTime}
-          </p>
-
-          <p>
-            Title: {report.title}
-          </p>
-
-          <p>
-            Meta Description: {report.metaDescription}
-          </p>
-
-          <p>
-            H1 Count: {report.h1Count}
-          </p>
-
-          <p>
-            Missing Alt Images: {report.missingAltImages}
-          </p>
-
-          <p>
-            Word Count: {report.wordCount}
-          </p>
+          <pre>
+            {JSON.stringify(result, null, 2)}
+          </pre>
 
         </div>
       )}
 
-
-
-      <footer>
-        <a
-          href="https://digitalheroesco.com"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Built for Digital Heroes Training Task
-        </a>
-      </footer>
-
-
     </div>
   );
 }
-
 
 export default App;
