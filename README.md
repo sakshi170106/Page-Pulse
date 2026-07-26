@@ -2,22 +2,21 @@
 
 ## Project Overview
 
-Page Pulse is a web-based tool that audits any website URL and generates a performance report.
+Page Pulse is a web-based website performance auditing tool.
 
-It fetches the webpage, analyzes HTML content, and provides useful information like HTTP status, response time, page title, meta description, heading count, missing image alt text, and approximate word count.
+It analyzes a website URL and generates a report containing HTTP status, response time, page title, meta description, H1 heading count, missing image alt attributes, and word count.
 
 ## Features
 
-- Analyze any valid website URL
+- Analyze website URL
 - Check HTTP response status
 - Measure response time
 - Extract page title
 - Extract meta description
-- Count H1 headings
-- Detect images missing alt text
-- Calculate approximate word count
-- Handle invalid URLs and failed requests properly
-
+- Count H1 tags
+- Detect missing image alt attributes
+- Calculate word count
+- Handle invalid URLs with proper error messages
 
 ## Tech Stack
 
@@ -36,12 +35,9 @@ It fetches the webpage, analyzes HTML content, and provides useful information l
 - Jest
 - Supertest
 
+## Installation and Setup
 
-## Project Setup
-
-### Backend Setup
-
-Go to backend folder:
+### Clone Repository
 
 ```bash
-cd backend
+git clone https://github.com/sakshi170106/Page-Pulse.git
